@@ -1,4 +1,4 @@
-﻿namespace AirportTicketBookingExercise;
+﻿namespace AirportTicketBookingExercise.Models;
 
 public class Booking
 {
@@ -9,9 +9,9 @@ public class Booking
     public override string ToString()
     {
         return $"""
-                Flight: 
-                {Flight}, 
-                Passenger: 
+                Flight:
+                {Flight},
+                Passenger:
                 {Passenger}
                 """;
     }

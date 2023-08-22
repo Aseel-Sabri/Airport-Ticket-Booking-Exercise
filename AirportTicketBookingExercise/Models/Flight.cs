@@ -1,4 +1,4 @@
-﻿namespace AirportTicketBookingExercise;
+﻿namespace AirportTicketBookingExercise.Models;
 
 public class Flight
 {
@@ -24,9 +24,9 @@ public class Flight
     public required int BusinessClassCapacity { get; set; }
     public required int FirstClassCapacity { get; set; }
     public List<int> PassengerIds { get; set; }
-    
+
     public static int MaxId { get; private set; } = 0;
-    
+
     public Flight()
     {
         Id = ++MaxId;

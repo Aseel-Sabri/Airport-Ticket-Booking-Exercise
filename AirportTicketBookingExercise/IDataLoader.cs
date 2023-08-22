@@ -1,4 +1,6 @@
-﻿namespace AirportTicketBookingExercise;
+﻿using AirportTicketBookingExercise.Models;
+
+namespace AirportTicketBookingExercise;
 
 public interface IDataLoader
 {
