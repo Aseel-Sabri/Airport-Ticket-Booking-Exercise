@@ -6,6 +6,9 @@
         {
             IDataLoader dataLoader = CsvDataLoader.Instance;
             dataLoader.LoadData();
+
+            IUserInterface userInterface = new ConsoleUserInterface();
+            userInterface.Run();
         }
     }
 }
