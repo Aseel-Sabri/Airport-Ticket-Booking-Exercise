@@ -3,16 +3,17 @@
 public class Booking
 {
     public User Passenger { get; set; }
-    public Flight Flight { get; set; }
-    public FlightClass Class { get; set; }
+    public FlightClass FlightClass { get; set; }
 
     public override string ToString()
     {
         return $"""
-                Flight:
-                {Flight},
                 Passenger:
-                {Passenger}
+                    {Passenger.Id}
+                Flight:
+                    {FlightClass.Flight.Id},
+                Class:
+                    {FlightClass.Type}    
                 """;
     }
 }

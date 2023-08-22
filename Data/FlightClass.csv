@@ -1,0 +1,7 @@
+Id,FlightId,Type,Price,Capacity
+1,1,Economy,100,10
+2,1,Business,200,20
+3,1,FirstClass,300,30
+4,2,Economy,400,40
+5,2,Business,500,50
+6,2,FirstClass,600,60

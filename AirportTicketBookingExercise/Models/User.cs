@@ -4,8 +4,8 @@ public class User
 {
     public enum UserRole
     {
-        Manager,
-        Passenger
+        Manager = 1,
+        Passenger = 2
     }
 
     public int Id { get; init; }
