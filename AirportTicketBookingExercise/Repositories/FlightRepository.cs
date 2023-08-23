@@ -1,10 +1,13 @@
 ﻿using AirportTicketBookingExercise.DTOs;
 using AirportTicketBookingExercise.Models;
+using FluentResults;
 
 namespace AirportTicketBookingExercise.Repositories;
 
 public class FlightRepository : IFlightRepository
 {
+    private readonly IUserRepository _userRepository = new UserRepository();
+
     private readonly List<User> _users;
     private readonly List<Flight> _flights;
     private readonly List<FlightClass> _flightClasses;
@@ -55,5 +58,76 @@ public class FlightRepository : IFlightRepository
             availableFlights = availableFlights.Where(flightClass => flightClass.Type == flightDto.Class);
 
         return availableFlights;
+    }
+
+    public Result BookFlight(int flightId, FlightClass.ClassType flightClass, int passengerId)
+    {
+        if (!HasFlight(flightId))
+            return Result.Fail($"Booking Failed: No flight with ID {flightId} Exists");
+
+        var flightNotBooked = CheckIfFlightNotBooked();
+        if (flightNotBooked.IsFailed)
+            return flightNotBooked;
+
+        var flightToBookList = _flightClasses
+            .Where(flight => flight.Flight.Id == flightId)
+            .Where(flight => flight.Type == flightClass)
+            .ToList();
+
+        var hasAvailableSeats = HasAvailableSeats();
+        if (hasAvailableSeats.IsFailed)
+            return hasAvailableSeats;
+
+        AddBooking(flightToBookList.First());
+        return Result.Ok();
+
+        #region local functions
+
+        Result CheckIfFlightNotBooked()
+        {
+            var bookedFlight = _bookings.Where(booking =>
+                booking.FlightClass.Flight.Id == flightId && booking.Passenger.Id == passengerId).ToList();
+
+            if (bookedFlight.Any())
+            {
+                if (bookedFlight.First().FlightClass.Type == flightClass)
+                    return Result.Fail($"Booking Failed: Flight already booked");
+
+                return Result.Fail(
+                    $"Booking Failed: A seat in the {bookedFlight.First().FlightClass.Type} of the flight already Booked");
+            }
+
+            return Result.Ok();
+        }
+
+        Result HasAvailableSeats()
+        {
+            if (!flightToBookList!.Any() || flightToBookList!.First().GetAvailableNumberOfSeats() == 0)
+            {
+                return Result.Fail($"Booking Failed: No available {flightClass} seats to book in the flight");
+            }
+
+            return Result.Ok();
+        }
+
+        void AddBooking(FlightClass flightToBook)
+        {
+            var passengerResult = _userRepository.GetUserById(passengerId);
+            flightToBook.Passengers.Add(passengerResult.Value);
+            _bookings.Add(
+                new Booking()
+                {
+                    Passenger = passengerResult.Value,
+                    FlightClass = flightToBook
+                }
+            );
+        }
+
+        #endregion
+    }
+
+    private bool HasFlight(int flightId)
+    {
+        return _flights.Any(flight => flight.Id == flightId);
     }
 }

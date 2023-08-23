@@ -47,6 +47,7 @@ public class PassengerMenuDisplay : MenuDisplay
         {
             case PassengerOperation.BookFlight:
             {
+                _flightServices.BookFlight(_loggedUser.Id);
                 return;
             }
             case PassengerOperation.ViewBookings:

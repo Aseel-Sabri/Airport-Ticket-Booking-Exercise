@@ -11,6 +11,7 @@ public class Booking
                 {FlightClass.Flight},
                       Class: {FlightClass.Type}
                       Price: {FlightClass.Price}
+                      
                 """;
     }
 }

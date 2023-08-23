@@ -40,4 +40,31 @@ public static class ConsoleValidation
             .OkIf(ClassType.TryParse<ClassType>(classString, out _),
                 $"Invalid Class Type, Valid Classes: {ClassType.EconomyClass}, {ClassType.BusinessClass} & {ClassType.FirstClass}");
     }
+
+    public static Result ValidateClassType(string? classString)
+    {
+        if (!string.IsNullOrWhiteSpace(classString))
+        {
+            if (ClassType.TryParse<ClassType>(classString, out _))
+            {
+                return Result.Ok();
+            }
+        }
+
+        return Result.Fail(
+            $"Invalid Class Type, Valid Classes: {ClassType.EconomyClass}, {ClassType.BusinessClass} & {ClassType.FirstClass}");
+    }
+
+    public static Result ValidateId(string? idString)
+    {
+        if (!string.IsNullOrWhiteSpace(idString))
+        {
+            if (int.TryParse(idString, out int id) && id > 0)
+            {
+                return Result.Ok();
+            }
+        }
+
+        return Result.Fail("Invalid ID: ID Must Be A Positive Integer");
+    }
 }

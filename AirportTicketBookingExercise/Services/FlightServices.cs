@@ -10,6 +10,22 @@ public class FlightServices : IFlightServices
 {
     private readonly IFlightRepository _flightRepository = new FlightRepository();
 
+    public void BookFlight(int passengerId)
+    {
+        var flightId = GetId();
+        var flightClass = GetClass();
+        var bookingResult = _flightRepository.BookFlight(flightId, flightClass, passengerId);
+
+        Console.WriteLine();
+        if (bookingResult.IsFailed)
+        {
+            Console.WriteLine(bookingResult.Errors.First().Message);
+            return;
+        }
+
+        Console.WriteLine("Booked Successfully");
+    }
+
     public void SearchAvailableFlightsForBooking(int passengerId)
     {
         Console.WriteLine("Specify attributes to be used in search");
@@ -59,6 +75,18 @@ public class FlightServices : IFlightServices
     {
         var classString = GetField(ConsoleValidation.ValidateNullableClassType, "Class");
         return classString == null ? null : Enum.Parse<FlightClass.ClassType>(classString);
+    }
+
+    private FlightClass.ClassType GetClass()
+    {
+        var classString = GetField(ConsoleValidation.ValidateClassType, "Class");
+        return Enum.Parse<FlightClass.ClassType>(classString!);
+    }
+
+    private int GetId()
+    {
+        var idString = GetField(ConsoleValidation.ValidateId, "Flight ID");
+        return int.Parse(idString!);
     }
 
     private static string? GetField(Func<string?, Result> fieldValidationMethod, string fieldName)
