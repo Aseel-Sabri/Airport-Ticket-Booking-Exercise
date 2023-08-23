@@ -30,16 +30,13 @@ public class CsvDataLoader : IDataLoader
         Flights = LoadEntities<Flight>();
         FlightClasses = LoadEntities<FlightClass>();
         Bookings = LoadEntities<Booking>();
-        FillFlightClassPassengers();
+        UpdateFlightClassPassengerCount();
     }
 
-    private void FillFlightClassPassengers()
+    private void UpdateFlightClassPassengerCount()
     {
         FlightClasses.ForEach(flightClass =>
-        {
-            var bookings = Bookings.Where(booking => booking.FlightClass.Id == flightClass.Id).ToList();
-            flightClass.Passengers = bookings.Select(booking => booking.Passenger).ToList();
-        });
+            flightClass.PassengerCount = Bookings.Count(booking => booking.FlightClass.Id == flightClass.Id));
     }
 
     private List<T> LoadEntities<T>()

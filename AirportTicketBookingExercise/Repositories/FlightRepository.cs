@@ -113,7 +113,7 @@ public class FlightRepository : IFlightRepository
         void AddBooking(FlightClass flightToBook)
         {
             var passengerResult = _userRepository.GetUserById(passengerId);
-            flightToBook.Passengers.Add(passengerResult.Value);
+            flightToBook.PassengerCount++;
             _bookings.Add(
                 new Booking()
                 {

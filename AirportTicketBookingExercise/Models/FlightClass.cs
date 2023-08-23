@@ -7,13 +7,14 @@ public class FlightClass
     public required ClassType Type { get; set; }
     public required double Price { get; set; }
     public required int Capacity { get; set; }
-    public List<User> Passengers { get; set; } = new List<User>();
+
+    public int PassengerCount { get; set; }
 
     public static int MaxId { get; private set; } = 0;
 
     public int GetAvailableNumberOfSeats()
     {
-        return Capacity - Passengers.Count;
+        return Capacity - PassengerCount;
     }
 
     public override string ToString()
