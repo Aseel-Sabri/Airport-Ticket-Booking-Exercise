@@ -7,4 +7,5 @@ public interface IFlightServices
     void SearchAvailableFlightsForBooking(int passengerId);
     void BookFlight(int passengerId);
     void EditBooking(int passengerId);
+    void CancelBooking(int passengerId);
 }

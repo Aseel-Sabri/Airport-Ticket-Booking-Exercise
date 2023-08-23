@@ -123,4 +123,18 @@ public class FlightServices : IFlightServices
 
         Console.WriteLine("Updated Successfully");
     }
+
+    public void CancelBooking(int passengerId)
+    {
+        var flightId = GetId();
+        var cancelResult = _flightRepository.CancelBooking(flightId, passengerId);
+
+        if (cancelResult.IsFailed)
+        {
+            Console.WriteLine(cancelResult.Errors.First().Message);
+            return;
+        }
+
+        Console.WriteLine("Cancelled Successfully");
+    }
 }

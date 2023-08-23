@@ -62,6 +62,7 @@ public class PassengerMenuDisplay : MenuDisplay
             }
             case PassengerOperation.CancelBooking:
             {
+                _flightServices.CancelBooking(_loggedUser.Id);
                 return;
             }
             case PassengerOperation.SearchAvailableFlight:

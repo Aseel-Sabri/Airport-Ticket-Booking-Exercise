@@ -161,4 +161,21 @@ public class FlightRepository : IFlightRepository
 
         #endregion
     }
+
+    public Result CancelBooking(int flightId, int passengerId)
+    {
+        if (!HasFlight(flightId))
+            return Result.Fail($"Cancel Failed: No flight with ID {flightId} Exists");
+
+        var isFlightBooked = IsFlightBooked(flightId, passengerId);
+        if (isFlightBooked.IsFailed)
+            return Result.Fail($"Cancel Failed: {isFlightBooked.Errors.First().Message}");
+
+        var bookedFlight = _bookings.Where(booking =>
+            booking.FlightClass.Flight.Id == flightId && booking.Passenger.Id == passengerId).ToList().First();
+
+        bookedFlight.FlightClass.PassengerCount--;
+        _bookings.Remove(bookedFlight);
+        return Result.Ok();
+    }
 }
