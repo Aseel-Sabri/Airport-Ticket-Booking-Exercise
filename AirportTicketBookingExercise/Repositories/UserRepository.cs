@@ -17,7 +17,7 @@ public class UserRepository : IUserRepository
         _bookings = dataLoader.Bookings;
     }
 
-    public Result AreValidUserCredentials(string? username, string? password)
+    public Result<User> ValidateUserCredentials(string? username, string? password)
     {
         var userResult = GetUserByUsername(username);
         if (userResult.IsFailed)
@@ -25,7 +25,7 @@ public class UserRepository : IUserRepository
             return userResult.ToResult();
         }
 
-        return Result.OkIf(IsValidPassword(), "Invalid Password");
+        return IsValidPassword() ? Result.Ok(userResult.Value) : Result.Fail("Invalid Password");
 
         #region local function
 

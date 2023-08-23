@@ -1,4 +1,6 @@
-﻿using AirportTicketBookingExercise.Repositories;
+﻿using AirportTicketBookingExercise.Models;
+using AirportTicketBookingExercise.Repositories;
+using FluentResults;
 
 namespace AirportTicketBookingExercise.Services;
 
@@ -6,17 +8,16 @@ public class UserServices : IUserServices
 {
     private readonly IUserRepository _userRepository = new UserRepository();
 
-    public bool Login()
+    public Result<User> Login()
     {
         GetUserCredentials(out var username, out var password);
-        var validationResult = _userRepository.AreValidUserCredentials(username, password);
+        var validationResult = _userRepository.ValidateUserCredentials(username, password);
         if (validationResult.IsFailed)
         {
             Console.WriteLine(validationResult.Errors.First().Message);
-            return false;
         }
 
-        return true;
+        return validationResult;
     }
 
     private void GetUserCredentials(out string? username, out string? password)

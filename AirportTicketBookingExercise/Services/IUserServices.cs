@@ -1,6 +1,9 @@
-﻿namespace AirportTicketBookingExercise.Services;
+﻿using AirportTicketBookingExercise.Models;
+using FluentResults;
+
+namespace AirportTicketBookingExercise.Services;
 
 public interface IUserServices
 {
-    bool Login();
+    Result<User> Login();
 }

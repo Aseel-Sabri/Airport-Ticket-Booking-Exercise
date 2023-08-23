@@ -1,4 +1,6 @@
-﻿namespace AirportTicketBookingExercise
+﻿using AirportTicketBookingExercise.UserInterface;
+
+namespace AirportTicketBookingExercise
 {
     internal class Program
     {

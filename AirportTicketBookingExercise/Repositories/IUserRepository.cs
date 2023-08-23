@@ -1,8 +1,9 @@
-﻿using FluentResults;
+﻿using AirportTicketBookingExercise.Models;
+using FluentResults;
 
 namespace AirportTicketBookingExercise.Repositories;
 
 public interface IUserRepository
 {
-    Result AreValidUserCredentials(string? username, string? password);
+    public Result<User> ValidateUserCredentials(string? username, string? password);
 }

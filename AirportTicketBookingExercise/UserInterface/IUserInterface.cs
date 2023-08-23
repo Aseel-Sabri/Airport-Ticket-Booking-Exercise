@@ -1,4 +1,4 @@
-﻿namespace AirportTicketBookingExercise;
+﻿namespace AirportTicketBookingExercise.UserInterface;
 
 public interface IUserInterface
 {
