@@ -137,7 +137,7 @@ public class FlightServices : IFlightServices
 
         Console.WriteLine("Cancelled Successfully");
     }
-    
+
     public void ViewPassengerBookings(int passengerId)
     {
         var bookings = _flightRepository.GetPassengerBookings(passengerId).ToList();
@@ -150,6 +150,21 @@ public class FlightServices : IFlightServices
         foreach (var booking in bookings)
         {
             Console.WriteLine(booking.PassengerBookingToString());
+        }
+    }
+
+    public void ViewAllBookings()
+    {
+        var bookings = _flightRepository.GetAllBookings().ToList();
+        if (!bookings.Any())
+        {
+            Console.WriteLine("No Flights Were Booked");
+            return;
+        }
+
+        foreach (var booking in bookings)
+        {
+            Console.WriteLine(booking.ManagerBookingToString());
         }
     }
 }

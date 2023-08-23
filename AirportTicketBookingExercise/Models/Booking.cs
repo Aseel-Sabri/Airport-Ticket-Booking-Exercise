@@ -14,4 +14,17 @@ public class Booking
                       
                 """;
     }
+
+    public string ManagerBookingToString()
+    {
+        return $"""
+                 Passenger:
+                      ID: {Passenger.Id}
+                      Username: {Passenger.Username}
+                {FlightClass.Flight},
+                      Class: {FlightClass.Type}
+                      Price: {FlightClass.Price}
+                
+                """;
+    }
 }

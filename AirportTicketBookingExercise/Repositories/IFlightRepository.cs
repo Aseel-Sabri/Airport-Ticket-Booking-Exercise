@@ -11,4 +11,5 @@ public interface IFlightRepository
     Result EditBooking(int flightId, FlightClass.ClassType flightClass, int passengerId);
     Result CancelBooking(int flightId, int passengerId);
     IEnumerable<Booking> GetPassengerBookings(int passengerId);
+    IEnumerable<Booking> GetAllBookings();
 }

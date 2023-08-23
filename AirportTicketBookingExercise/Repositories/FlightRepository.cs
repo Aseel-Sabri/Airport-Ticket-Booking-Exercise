@@ -182,4 +182,9 @@ public class FlightRepository : IFlightRepository
         return _bookings
             .Where(booking => booking.Passenger.Id == passengerId);
     }
+
+    public IEnumerable<Booking> GetAllBookings()
+    {
+        return _bookings.AsEnumerable();
+    }
 }

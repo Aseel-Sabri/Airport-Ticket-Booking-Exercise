@@ -1,7 +1,11 @@
-﻿namespace AirportTicketBookingExercise.UserInterface;
+﻿using AirportTicketBookingExercise.Services;
+
+namespace AirportTicketBookingExercise.UserInterface;
 
 public class ManagerMenuDisplay : MenuDisplay
 {
+    private readonly IFlightServices _flightServices = new FlightServices();
+
     enum ManagerOperation
     {
         ViewBookings = 1,
@@ -17,7 +21,7 @@ public class ManagerMenuDisplay : MenuDisplay
     protected override void DisplayOptions()
     {
         Console.WriteLine("\nChoose Operation\n");
-        Console.WriteLine("1. Book a flight");
+        Console.WriteLine("1. View all bookings");
         Console.WriteLine("2. Upload flights from CSV file");
         Console.WriteLine("3. Exit");
     }
@@ -30,6 +34,7 @@ public class ManagerMenuDisplay : MenuDisplay
         {
             case ManagerOperation.ViewBookings:
             {
+                _flightServices.ViewAllBookings();
                 return;
             }
             case ManagerOperation.UploadFlights:
