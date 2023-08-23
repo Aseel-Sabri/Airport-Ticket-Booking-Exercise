@@ -40,9 +40,8 @@ public class UserRepository : IUserRepository
 
     private Result<User> GetUserByUsername(string? username)
     {
-        var user = _users.Where(user => user.Username == username)
-            .Select(user => user)
-            .FirstOrDefault();
+        var user = _users
+            .FirstOrDefault(user => user.Username == username);
         return user == null
             ? Result.Fail($"Invalid Username: No user with username '{username}' exists")
             : Result.Ok(user);

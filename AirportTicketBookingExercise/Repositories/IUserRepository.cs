@@ -5,6 +5,6 @@ namespace AirportTicketBookingExercise.Repositories;
 
 public interface IUserRepository
 {
-    public Result<User> ValidateUserCredentials(string? username, string? password);
+    Result<User> ValidateUserCredentials(string? username, string? password);
     IEnumerable<Booking> GetPassengerBookings(int passengerId);
 }

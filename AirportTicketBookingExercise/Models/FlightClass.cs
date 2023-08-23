@@ -6,26 +6,31 @@ public class FlightClass
     public required Flight Flight { get; set; }
     public required ClassType Type { get; set; }
     public required double Price { get; set; }
-    public required double Capacity { get; set; }
+    public required int Capacity { get; set; }
     public List<User> Passengers { get; set; } = new List<User>();
 
     public static int MaxId { get; private set; } = 0;
 
+    public int GetAvailableNumberOfSeats()
+    {
+        return Capacity - Passengers.Count;
+    }
+
     public override string ToString()
     {
         return $"""
-                ID: {Id}
-                    Flight: {Flight.Id}
-                    Type: {Type}
-                    Price: {Price}
-                    Capacity: {Capacity}
+                Flight: {Flight}
+                Class: {Type}
+                Price: {Price}
+                Number of Free Seats: {GetAvailableNumberOfSeats()}
+                
                 """;
     }
 
     public enum ClassType
     {
-        Economy = 1,
-        Business = 2,
+        EconomyClass = 1,
+        BusinessClass = 2,
         FirstClass = 3
     }
 }
