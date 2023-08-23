@@ -8,4 +8,5 @@ public interface IFlightRepository
 {
     IEnumerable<FlightClass> GetAvailableFilteredFlights(FlightDto flightDto, int passengerId);
     Result BookFlight(int flightId, FlightClass.ClassType flightClass, int passengerId);
+    Result EditBooking(int flightId, FlightClass.ClassType flightClass, int passengerId);
 }

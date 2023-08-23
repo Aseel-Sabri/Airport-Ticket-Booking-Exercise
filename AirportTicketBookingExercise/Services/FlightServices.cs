@@ -106,4 +106,21 @@ public class FlightServices : IFlightServices
 
         return string.IsNullOrWhiteSpace(value) ? null : value;
     }
+
+    public void EditBooking(int passengerId)
+    {
+        Console.WriteLine("Enter booked flight ID & the class you wish to move your booking to");
+        var flightId = GetId();
+        var flightClass = GetClass();
+        var editResult = _flightRepository.EditBooking(flightId, flightClass, passengerId);
+
+        Console.WriteLine();
+        if (editResult.IsFailed)
+        {
+            Console.WriteLine(editResult.Errors.First().Message);
+            return;
+        }
+
+        Console.WriteLine("Updated Successfully");
+    }
 }
