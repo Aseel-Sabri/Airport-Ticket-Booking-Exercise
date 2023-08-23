@@ -37,7 +37,7 @@ public class ConsoleUserInterface : IUserInterface
         }
         else
         {
-            menuDisplay = new PassengerMenuDisplay();
+            menuDisplay = new PassengerMenuDisplay(_loggedUser);
         }
 
         menuDisplay.DisplayUserMenu();

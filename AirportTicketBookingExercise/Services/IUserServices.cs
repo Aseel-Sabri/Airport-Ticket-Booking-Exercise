@@ -6,4 +6,5 @@ namespace AirportTicketBookingExercise.Services;
 public interface IUserServices
 {
     Result<User> Login();
+    void ViewPassengerBookings(int passengerId);
 }

@@ -47,4 +47,10 @@ public class UserRepository : IUserRepository
             ? Result.Fail($"Invalid Username: No user with username '{username}' exists")
             : Result.Ok(user);
     }
+
+    public IEnumerable<Booking> GetPassengerBookings(int passengerId)
+    {
+        return _bookings
+            .Where(booking => booking.Passenger.Id == passengerId);
+    }
 }
