@@ -8,7 +8,6 @@ public class FlightRepository : IFlightRepository
 {
     private readonly IUserRepository _userRepository = new UserRepository();
 
-    private readonly List<User> _users;
     private readonly List<Flight> _flights;
     private readonly List<FlightClass> _flightClasses;
     private readonly List<Booking> _bookings;
@@ -16,7 +15,6 @@ public class FlightRepository : IFlightRepository
     public FlightRepository()
     {
         IDataLoader dataLoader = CsvDataLoader.Instance;
-        _users = dataLoader.Users;
         _flights = dataLoader.Flights;
         _flightClasses = dataLoader.FlightClasses;
         _bookings = dataLoader.Bookings;
@@ -177,5 +175,11 @@ public class FlightRepository : IFlightRepository
         bookedFlight.FlightClass.PassengerCount--;
         _bookings.Remove(bookedFlight);
         return Result.Ok();
+    }
+
+    public IEnumerable<Booking> GetPassengerBookings(int passengerId)
+    {
+        return _bookings
+            .Where(booking => booking.Passenger.Id == passengerId);
     }
 }

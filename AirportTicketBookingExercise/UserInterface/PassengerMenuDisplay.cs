@@ -5,7 +5,6 @@ namespace AirportTicketBookingExercise.UserInterface;
 
 public class PassengerMenuDisplay : MenuDisplay
 {
-    private readonly IUserServices _userServices = new UserServices();
     private readonly IFlightServices _flightServices = new FlightServices();
     private readonly User _loggedUser;
 
@@ -52,7 +51,7 @@ public class PassengerMenuDisplay : MenuDisplay
             }
             case PassengerOperation.ViewBookings:
             {
-                _userServices.ViewPassengerBookings(_loggedUser.Id);
+                _flightServices.ViewPassengerBookings(_loggedUser.Id);
                 return;
             }
             case PassengerOperation.EditBooking:

@@ -40,19 +40,4 @@ public class UserServices : IUserServices
         Console.WriteLine();
         Console.WriteLine();
     }
-
-    public void ViewPassengerBookings(int passengerId)
-    {
-        var bookings = _userRepository.GetPassengerBookings(passengerId).ToList();
-        if (!bookings.Any())
-        {
-            Console.WriteLine("No Flights Were Booked");
-            return;
-        }
-
-        foreach (var booking in bookings)
-        {
-            Console.WriteLine(booking.PassengerBookingToString());
-        }
-    }
 }

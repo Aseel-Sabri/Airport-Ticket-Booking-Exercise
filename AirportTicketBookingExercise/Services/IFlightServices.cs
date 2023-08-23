@@ -8,4 +8,5 @@ public interface IFlightServices
     void BookFlight(int passengerId);
     void EditBooking(int passengerId);
     void CancelBooking(int passengerId);
+    void ViewPassengerBookings(int passengerId);
 }
