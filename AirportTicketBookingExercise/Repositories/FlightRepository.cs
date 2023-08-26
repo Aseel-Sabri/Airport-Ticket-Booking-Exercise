@@ -69,7 +69,9 @@ public class FlightRepository : IFlightRepository
             return Result.Fail(
                 $"Booking Failed: A seat in flight {flightId} already Booked");
 
-        if (!HasAvailableSeats(flightId, flightClass))
+        var flightToBook = GetFlightClass(flightId, flightClass);
+
+        if (!HasAvailableSeats(flightToBook))
             return Result.Fail($"Booking Failed: No available {flightClass} seats to book in the flight");
 
         AddBooking();
@@ -79,13 +81,8 @@ public class FlightRepository : IFlightRepository
 
         void AddBooking()
         {
-            var flightToBook = _flightClasses
-                .Where(flight => flight.Flight.Id == flightId)
-                .Where(flight => flight.Type == flightClass)
-                .ToList().First();
-
             var passengerResult = _userRepository.GetUserById(passengerId);
-            flightToBook.PassengerCount++;
+            flightToBook!.PassengerCount++;
             _bookings.Add(
                 new Booking()
                 {
@@ -112,14 +109,17 @@ public class FlightRepository : IFlightRepository
             $"No seat was booked in flight {flightId}");
     }
 
-    private bool HasAvailableSeats(int flightId, FlightClass.ClassType flightClass)
+    private FlightClass? GetFlightClass(int flightId, FlightClass.ClassType flightClass)
     {
-        var flight = _flightClasses
-            .Where(flight => flight.Flight.Id == flightId)
-            .Where(flight => flight.Type == flightClass)
-            .ToList();
+        return
+            _flightClasses
+                .FirstOrDefault(flight => flight.Flight.Id == flightId
+                                          && flight.Type == flightClass);
+    }
 
-        return flight.Any() && flight.First().GetAvailableNumberOfSeats() > 0;
+    private bool HasAvailableSeats(FlightClass? flight)
+    {
+        return flight != null && flight.GetAvailableNumberOfSeats() > 0;
     }
 
     private bool HasFlight(int flightId)
@@ -136,7 +136,9 @@ public class FlightRepository : IFlightRepository
         if (isFlightBooked.IsFailed)
             return Result.Fail($"Edit Failed: {isFlightBooked.Errors.First().Message}");
 
-        if (!HasAvailableSeats(flightId, flightClass))
+        var flightToBook = GetFlightClass(flightId, flightClass);
+
+        if (!HasAvailableSeats(flightToBook))
             return Result.Fail($"Edit Failed: No available {flightClass} seats in flight {flightId}");
 
         UpdateBooking();
@@ -149,13 +151,9 @@ public class FlightRepository : IFlightRepository
             var bookedFlight = _bookings.Where(booking =>
                 booking.FlightClass.Flight.Id == flightId && booking.Passenger.Id == passengerId).ToList().First();
 
-            var flightToBook = _flightClasses
-                .First(flight => flight.Flight.Id == flightId
-                                 && flight.Type == flightClass);
-
             bookedFlight.FlightClass.PassengerCount--;
-            bookedFlight.FlightClass = flightToBook;
-            flightToBook.PassengerCount++;
+            bookedFlight.FlightClass = flightToBook!;
+            flightToBook!.PassengerCount++;
         }
 
         #endregion
