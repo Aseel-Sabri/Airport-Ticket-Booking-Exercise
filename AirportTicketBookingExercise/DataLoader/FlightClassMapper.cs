@@ -33,7 +33,7 @@ public class FlightClassMapper : IEntityMapper<FlightClass>
     private Result<int> GetId(IReaderRow csvReader)
     {
         var fieldValue = csvReader.GetField<string>("Id");
-        if (CsvValidation.IsPositiveInteger(fieldValue))
+        if (BasicValidation.IsPositiveInteger(fieldValue))
         {
             var id = int.Parse(fieldValue!);
             return Result.Ok(id);
@@ -52,7 +52,7 @@ public class FlightClassMapper : IEntityMapper<FlightClass>
     private Result<int> GetCapacity(IReaderRow csvReader)
     {
         var fieldValue = csvReader.GetField<string>("Capacity");
-        if (CsvValidation.IsPositiveInteger(fieldValue))
+        if (BasicValidation.IsPositiveInteger(fieldValue))
         {
             var capacity = int.Parse(fieldValue!);
             return Result.Ok(capacity);
@@ -70,7 +70,7 @@ public class FlightClassMapper : IEntityMapper<FlightClass>
     private Result<double> GetPrice(IReaderRow csvReader)
     {
         var fieldValue = csvReader.GetField<string>("Price");
-        if (CsvValidation.IsPositiveDouble(fieldValue))
+        if (BasicValidation.IsPositiveDouble(fieldValue))
         {
             var price = double.Parse(fieldValue!);
             return Result.Ok(price);
@@ -113,7 +113,7 @@ public class FlightClassMapper : IEntityMapper<FlightClass>
         #endregion
 
         var fieldValue = csvReader.GetField<string>("FlightId");
-        if (!CsvValidation.IsPositiveInteger(fieldValue))
+        if (!BasicValidation.IsPositiveInteger(fieldValue))
             return Result.Fail(errorMessage);
 
         var id = int.Parse(fieldValue!);

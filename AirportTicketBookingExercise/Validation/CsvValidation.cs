@@ -41,14 +41,4 @@ public static class CsvValidation
             () =>
                 $"Duplicate Booking: Flight with ID {flight.Id} already booked by passenger with ID {passenger.Id}");
     }
-
-    public static bool IsPositiveInteger(string? input)
-    {
-        return int.TryParse(input, out var conversionOutput) && conversionOutput > 0;
-    }
-
-    public static bool IsPositiveDouble(string? input)
-    {
-        return double.TryParse(input, out var conversionOutput) && conversionOutput > 0;
-    }
 }

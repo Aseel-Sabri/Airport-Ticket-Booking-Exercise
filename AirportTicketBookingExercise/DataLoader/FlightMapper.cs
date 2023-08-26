@@ -38,7 +38,7 @@ public class FlightMapper : IEntityMapper<Flight>
     private Result<int> GetId(IReaderRow csvReader)
     {
         var fieldValue = csvReader.GetField<string>("Id");
-        if (CsvValidation.IsPositiveInteger(fieldValue))
+        if (BasicValidation.IsPositiveInteger(fieldValue))
         {
             var id = int.Parse(fieldValue!);
             return Result.Ok(id);

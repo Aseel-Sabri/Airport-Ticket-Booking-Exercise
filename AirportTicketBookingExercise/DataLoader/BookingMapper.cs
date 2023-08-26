@@ -40,7 +40,7 @@ public class BookingMapper : IEntityMapper<Booking>
         #endregion
 
         var fieldValue = csvReader.GetField("PassengerId");
-        if (!CsvValidation.IsPositiveInteger(fieldValue))
+        if (!BasicValidation.IsPositiveInteger(fieldValue))
         {
             return Result.Fail(errorMessage);
         }
@@ -74,7 +74,7 @@ public class BookingMapper : IEntityMapper<Booking>
 
         var flightClasses = CsvDataLoader.Instance.FlightClasses;
         var fieldValue = csvReader.GetField("FlightClassId");
-        if (!CsvValidation.IsPositiveInteger(fieldValue))
+        if (!BasicValidation.IsPositiveInteger(fieldValue))
         {
             return Result.Fail(errorMessage);
         }

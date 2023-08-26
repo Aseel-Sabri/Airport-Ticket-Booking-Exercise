@@ -31,7 +31,7 @@ public class UserMapper : IEntityMapper<User>
     private Result<int> GetUserId(IReaderRow csvReader)
     {
         var fieldValue = csvReader.GetField<string>("Id");
-        if (CsvValidation.IsPositiveInteger(fieldValue))
+        if (BasicValidation.IsPositiveInteger(fieldValue))
         {
             var id = int.Parse(fieldValue!);
             return Result.Ok(id);
