@@ -1,4 +1,5 @@
-﻿using AirportTicketBookingExercise.Models;
+﻿using AirportTicketBookingExercise.DataLoader;
+using AirportTicketBookingExercise.Models;
 using FluentResults;
 
 namespace AirportTicketBookingExercise.Repositories;

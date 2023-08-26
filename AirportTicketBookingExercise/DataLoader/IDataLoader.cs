@@ -1,6 +1,7 @@
 ﻿using AirportTicketBookingExercise.Models;
+using FluentResults;
 
-namespace AirportTicketBookingExercise;
+namespace AirportTicketBookingExercise.DataLoader;
 
 public interface IDataLoader
 {
@@ -9,5 +10,5 @@ public interface IDataLoader
     public List<Booking> Bookings { get; protected set; }
     public List<FlightClass> FlightClasses { get; set; }
 
-    public void LoadData();
+    public Result LoadData();
 }

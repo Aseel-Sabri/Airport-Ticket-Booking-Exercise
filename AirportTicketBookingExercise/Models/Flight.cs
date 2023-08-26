@@ -9,8 +9,6 @@ public class Flight
     public required string DepartureAirport { get; set; }
     public required string ArrivalAirport { get; set; }
 
-    public static int MaxId { get; private set; } = 0;
-
     public override string ToString()
     {
         return $"""

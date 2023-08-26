@@ -1,4 +1,5 @@
-﻿using AirportTicketBookingExercise.UserInterface;
+﻿using AirportTicketBookingExercise.DataLoader;
+using AirportTicketBookingExercise.UserInterface;
 
 namespace AirportTicketBookingExercise
 {
@@ -7,7 +8,16 @@ namespace AirportTicketBookingExercise
         static void Main(string[] args)
         {
             IDataLoader dataLoader = CsvDataLoader.Instance;
-            dataLoader.LoadData();
+            var loaderResult = dataLoader.LoadData();
+            if (loaderResult.IsFailed)
+            {
+                foreach (var error in loaderResult.Errors)
+                {
+                    Console.WriteLine(error.Message);
+                }
+
+                return;
+            }
 
             IUserInterface userInterface = new ConsoleUserInterface();
             userInterface.Run();
