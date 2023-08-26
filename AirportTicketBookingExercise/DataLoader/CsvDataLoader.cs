@@ -59,14 +59,13 @@ public class CsvDataLoader : IDataLoader
         return filePath;
     }
 
-    private Result LoadEntitiesIntoList<TEntity, TMapper>(List<TEntity> entityList, string? filePath = null)
+    public Result LoadEntitiesIntoList<TEntity, TMapper>(List<TEntity> entityList, string? filePath = null)
         where TMapper : IEntityMapper<TEntity>, new()
     {
         if (entityList is null)
             return Result.Fail("Null List Provided");
 
-        if (filePath is null)
-            filePath = GetDefaultFilePath<TEntity>();
+        filePath ??= GetDefaultFilePath<TEntity>();
 
         try
         {

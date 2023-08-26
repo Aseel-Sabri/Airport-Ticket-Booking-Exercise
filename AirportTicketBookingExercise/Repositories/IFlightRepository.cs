@@ -12,4 +12,6 @@ public interface IFlightRepository
     Result CancelBooking(int flightId, int passengerId);
     IEnumerable<Booking> GetPassengerBookings(int passengerId);
     IEnumerable<Booking> GetAllBookings();
+    Result LoadFlights(string filePath);
+    Result LoadFlightsClasses(string flightClassFilePath);
 }

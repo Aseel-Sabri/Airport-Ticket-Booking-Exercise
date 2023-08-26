@@ -167,4 +167,44 @@ public class FlightServices : IFlightServices
             Console.WriteLine(booking.ManagerBookingToString());
         }
     }
+
+    public void UploadFlights()
+    {
+        Console.WriteLine("You can click enter to skip");
+        Console.WriteLine("Full path for Flight CSV file:");
+        var flightFilePath = Console.ReadLine();
+        Console.WriteLine();
+
+        if (string.IsNullOrWhiteSpace(flightFilePath))
+            return;
+
+        var flightLoadingResult = _flightRepository.LoadFlights(flightFilePath);
+        if (flightLoadingResult.IsFailed)
+        {
+            foreach (var error in flightLoadingResult.Errors)
+                Console.WriteLine(error.Message);
+
+            return;
+        }
+
+        Console.WriteLine("Loaded Successfully");
+
+        Console.WriteLine("Full path for Flights Classes CSV file:");
+        var flightClassFilePath = Console.ReadLine();
+        Console.WriteLine();
+
+        if (string.IsNullOrWhiteSpace(flightClassFilePath))
+            return;
+
+        var flightClassLoadingResult = _flightRepository.LoadFlightsClasses(flightClassFilePath);
+        if (flightClassLoadingResult.IsFailed)
+        {
+            foreach (var error in flightClassLoadingResult.Errors)
+                Console.WriteLine(error.Message);
+
+            return;
+        }
+
+        Console.WriteLine("Loaded Successfully");
+    }
 }

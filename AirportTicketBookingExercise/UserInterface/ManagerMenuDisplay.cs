@@ -26,7 +26,6 @@ public class ManagerMenuDisplay : MenuDisplay
         Console.WriteLine("3. Exit");
     }
 
-    // TODO: Implement Operations
     protected override void PerformOperation(Enum operation)
     {
         var managerOperation = (ManagerOperation)operation;
@@ -39,6 +38,7 @@ public class ManagerMenuDisplay : MenuDisplay
             }
             case ManagerOperation.UploadFlights:
             {
+                _flightServices.UploadFlights();
                 return;
             }
         }

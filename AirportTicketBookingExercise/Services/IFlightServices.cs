@@ -10,4 +10,5 @@ public interface IFlightServices
     void CancelBooking(int passengerId);
     void ViewPassengerBookings(int passengerId);
     void ViewAllBookings();
+    void UploadFlights();
 }

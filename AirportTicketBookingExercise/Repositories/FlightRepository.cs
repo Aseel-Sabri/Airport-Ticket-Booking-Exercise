@@ -8,6 +8,8 @@ namespace AirportTicketBookingExercise.Repositories;
 public class FlightRepository : IFlightRepository
 {
     private readonly IUserRepository _userRepository = new UserRepository();
+    private readonly IDataLoader _dataLoader = CsvDataLoader.Instance;
+
 
     private readonly List<Flight> _flights;
     private readonly List<FlightClass> _flightClasses;
@@ -15,10 +17,9 @@ public class FlightRepository : IFlightRepository
 
     public FlightRepository()
     {
-        IDataLoader dataLoader = CsvDataLoader.Instance;
-        _flights = dataLoader.Flights;
-        _flightClasses = dataLoader.FlightClasses;
-        _bookings = dataLoader.Bookings;
+        _flights = _dataLoader.Flights;
+        _flightClasses = _dataLoader.FlightClasses;
+        _bookings = _dataLoader.Bookings;
     }
 
     public IEnumerable<FlightClass> GetAvailableFilteredFlights(FlightDto flightDto, int passengerId)
@@ -185,5 +186,15 @@ public class FlightRepository : IFlightRepository
     public IEnumerable<Booking> GetAllBookings()
     {
         return _bookings.AsEnumerable();
+    }
+
+    public Result LoadFlights(string filePath)
+    {
+        return _dataLoader.LoadEntitiesIntoList<Flight, FlightMapper>(_flights, filePath);
+    }
+
+    public Result LoadFlightsClasses(string filePath)
+    {
+        return _dataLoader.LoadEntitiesIntoList<FlightClass, FlightClassMapper>(_flightClasses, filePath);
     }
 }
