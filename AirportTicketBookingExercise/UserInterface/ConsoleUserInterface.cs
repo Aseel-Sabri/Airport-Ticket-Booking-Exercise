@@ -36,16 +36,7 @@ public class ConsoleUserInterface : IUserInterface
 
     private void DisplayMenu()
     {
-        MenuDisplay menuDisplay;
-        if (_loggedUser.Role == User.UserRole.Manager)
-        {
-            menuDisplay = MenuDisplayFactory.CreateManagerMenuDisplay(_flightServices);
-        }
-        else
-        {
-            menuDisplay = MenuDisplayFactory.CreatePassengerMenuDisplay(_loggedUser, _flightServices);
-        }
-
+        MenuDisplay menuDisplay = MenuDisplayFactory.CreateMenuDisplay(_loggedUser, _flightServices);
         menuDisplay.DisplayUserMenu();
     }
 }

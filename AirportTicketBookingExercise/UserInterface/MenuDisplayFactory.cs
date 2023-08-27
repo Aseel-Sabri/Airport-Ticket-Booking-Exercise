@@ -5,6 +5,15 @@ namespace AirportTicketBookingExercise.UserInterface;
 
 public static class MenuDisplayFactory
 {
+    public static MenuDisplay CreateMenuDisplay(User loggedUser, IFlightServices flightServices)
+    {
+        return loggedUser.Role switch
+        {
+            User.UserRole.Manager => CreateManagerMenuDisplay(flightServices),
+            User.UserRole.Passenger => CreatePassengerMenuDisplay(loggedUser, flightServices)
+        };
+    }
+
     public static MenuDisplay CreatePassengerMenuDisplay(User loggedUser, IFlightServices flightServices)
     {
         return new PassengerMenuDisplay(loggedUser, flightServices);
