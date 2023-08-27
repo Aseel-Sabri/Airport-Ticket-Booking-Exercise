@@ -5,8 +5,15 @@ namespace AirportTicketBookingExercise.UserInterface;
 
 public class ConsoleUserInterface : IUserInterface
 {
-    private readonly IUserServices _userServices = new UserServices();
+    private readonly IUserServices _userServices;
+    private readonly IFlightServices _flightServices;
     private User _loggedUser;
+
+    public ConsoleUserInterface(IUserServices userServices, IFlightServices flightServices)
+    {
+        _userServices = userServices;
+        _flightServices = flightServices;
+    }
 
     public void Run()
     {
@@ -33,11 +40,11 @@ public class ConsoleUserInterface : IUserInterface
         MenuDisplay menuDisplay;
         if (_loggedUser.Role == User.UserRole.Manager)
         {
-            menuDisplay = new ManagerMenuDisplay();
+            menuDisplay = MenuDisplayFactory.CreateManagerMenuDisplay(_flightServices);
         }
         else
         {
-            menuDisplay = new PassengerMenuDisplay(_loggedUser);
+            menuDisplay = MenuDisplayFactory.CreatePassengerMenuDisplay(_loggedUser, _flightServices);
         }
 
         menuDisplay.DisplayUserMenu();

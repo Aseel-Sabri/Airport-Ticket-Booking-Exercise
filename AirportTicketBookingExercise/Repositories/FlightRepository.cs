@@ -7,16 +7,18 @@ namespace AirportTicketBookingExercise.Repositories;
 
 public class FlightRepository : IFlightRepository
 {
-    private readonly IUserRepository _userRepository = new UserRepository();
-    private readonly IDataManager _dataManager = CsvDataManager.Instance;
+    private readonly IUserRepository _userRepository;
+    private readonly IDataManager _dataManager;
 
 
     private readonly List<Flight> _flights;
     private readonly List<FlightClass> _flightClasses;
     private readonly List<Booking> _bookings;
 
-    public FlightRepository()
+    public FlightRepository(IUserRepository userRepository, IDataManager dataManager)
     {
+        _userRepository = userRepository;
+        _dataManager = dataManager;
         _flights = _dataManager.Flights;
         _flightClasses = _dataManager.FlightClasses;
         _bookings = _dataManager.Bookings;

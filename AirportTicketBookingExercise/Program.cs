@@ -1,5 +1,6 @@
 ﻿using AirportTicketBookingExercise.CsvOperations;
 using AirportTicketBookingExercise.UserInterface;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AirportTicketBookingExercise
 {
@@ -7,21 +8,20 @@ namespace AirportTicketBookingExercise
     {
         static void Main(string[] args)
         {
-            IDataManager dataManager = CsvDataManager.Instance;
-            var loaderResult = dataManager.LoadData();
-            if (loaderResult.IsFailed)
-            {
-                foreach (var error in loaderResult.Errors)
-                {
-                    Console.WriteLine(error.Message);
-                }
+            var startup = new Startup();
+            var serviceProvider = startup.ConfigureServices();
 
-                return;
-            }
+            var dataManager = serviceProvider.GetRequiredService<IDataManager>();
+            if (!LoadData(dataManager)) return;
 
-            IUserInterface userInterface = new ConsoleUserInterface();
+            var userInterface = serviceProvider.GetRequiredService<IUserInterface>();
             userInterface.Run();
 
+            SaveData(dataManager);
+        }
+
+        private static void SaveData(IDataManager dataManager)
+        {
             var savingResult = dataManager.WriteData();
             if (savingResult.IsFailed)
             {
@@ -30,6 +30,22 @@ namespace AirportTicketBookingExercise
                     Console.WriteLine(error.Message);
                 }
             }
+        }
+
+        private static bool LoadData(IDataManager dataManager)
+        {
+            var loaderResult = dataManager.LoadData();
+            if (loaderResult.IsFailed)
+            {
+                foreach (var error in loaderResult.Errors)
+                {
+                    Console.WriteLine(error.Message);
+                }
+
+                return false;
+            }
+
+            return true;
         }
     }
 }

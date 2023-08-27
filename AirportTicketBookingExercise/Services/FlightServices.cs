@@ -8,7 +8,12 @@ namespace AirportTicketBookingExercise.Services;
 
 public class FlightServices : IFlightServices
 {
-    private readonly IFlightRepository _flightRepository = new FlightRepository();
+    private readonly IFlightRepository _flightRepository;
+
+    public FlightServices(IFlightRepository flightRepository)
+    {
+        _flightRepository = flightRepository;
+    }
 
     public void BookFlight(int passengerId)
     {

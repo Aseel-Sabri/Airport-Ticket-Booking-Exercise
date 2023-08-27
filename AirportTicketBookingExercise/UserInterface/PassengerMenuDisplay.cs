@@ -5,12 +5,13 @@ namespace AirportTicketBookingExercise.UserInterface;
 
 public class PassengerMenuDisplay : MenuDisplay
 {
-    private readonly IFlightServices _flightServices = new FlightServices();
+    private readonly IFlightServices _flightServices;
     private readonly User _loggedUser;
 
-    public PassengerMenuDisplay(User loggedUser)
+    public PassengerMenuDisplay(User loggedUser, IFlightServices flightServices)
     {
         _loggedUser = loggedUser;
+        _flightServices = flightServices;
     }
 
     enum PassengerOperation

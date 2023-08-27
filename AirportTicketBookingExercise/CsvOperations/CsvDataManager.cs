@@ -20,8 +20,9 @@ public class CsvDataManager : IDataManager
         get { return _instance ??= new CsvDataManager(); }
     }
 
-    private CsvDataManager()
+    public CsvDataManager()
     {
+        _instance = this;
     }
 
     public Result LoadData()
@@ -57,7 +58,7 @@ public class CsvDataManager : IDataManager
     {
         var fileName = $"Data/{typeof(T).Name}.csv";
         var filePath =
-            Path.Combine(Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName,
+            Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName,
                 fileName);
         return filePath;
     }

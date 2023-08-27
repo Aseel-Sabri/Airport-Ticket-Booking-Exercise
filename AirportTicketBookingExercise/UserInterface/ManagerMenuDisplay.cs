@@ -4,7 +4,12 @@ namespace AirportTicketBookingExercise.UserInterface;
 
 public class ManagerMenuDisplay : MenuDisplay
 {
-    private readonly IFlightServices _flightServices = new FlightServices();
+    private readonly IFlightServices _flightServices;
+
+    public ManagerMenuDisplay(IFlightServices flightServices)
+    {
+        _flightServices = flightServices;
+    }
 
     enum ManagerOperation
     {

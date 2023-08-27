@@ -6,7 +6,12 @@ namespace AirportTicketBookingExercise.Services;
 
 public class UserServices : IUserServices
 {
-    private readonly IUserRepository _userRepository = new UserRepository();
+    private readonly IUserRepository _userRepository;
+
+    public UserServices(IUserRepository userRepository)
+    {
+        _userRepository = userRepository;
+    }
 
     public Result<User> Login()
     {
@@ -16,6 +21,8 @@ public class UserServices : IUserServices
         {
             Console.WriteLine(validationResult.Errors.First().Message);
         }
+
+        Console.WriteLine();
 
         return validationResult;
     }
