@@ -109,7 +109,7 @@ public class FlightClassMapper : IEntityMapper<FlightClass>
                               * Positive Integer
                               * Correspond to An Existing Flight
                             """;
-        var errorMessage = ErrorMessage.GenerateFieldErrorMessage("Type", "FlightClass", errorDetails);
+        var errorMessage = ErrorMessage.GenerateFieldErrorMessage("FlightId", "FlightClass", errorDetails);
 
         #endregion
 

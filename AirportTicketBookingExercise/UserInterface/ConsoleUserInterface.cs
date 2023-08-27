@@ -27,7 +27,6 @@ public class ConsoleUserInterface : IUserInterface
         while (userLoginResult.IsFailed)
         {
             userLoginResult = _userServices.Login();
-            Console.WriteLine();
         }
 
         Console.WriteLine("Logged In Successfully");

@@ -214,7 +214,12 @@ public class FlightServices : IFlightServices
 
         foreach (var booking in bookings)
         {
-            Console.WriteLine(booking.PassengerBookingToString());
+            Console.WriteLine($"""
+                               {booking.FlightClass.Flight},
+                                     Class: {booking.FlightClass.Type}
+                                     Price: {booking.FlightClass.Price}
+                      
+                               """);
         }
     }
 
@@ -229,7 +234,15 @@ public class FlightServices : IFlightServices
 
         foreach (var booking in bookings)
         {
-            Console.WriteLine(booking.ManagerBookingToString());
+            Console.WriteLine($"""
+                                Passenger:
+                                     ID: {booking.Passenger.Id}
+                                     Username: {booking.Passenger.Username}
+                               {booking.FlightClass.Flight},
+                                     Class: {booking.FlightClass.Type}
+                                     Price: {booking.FlightClass.Price}
+                
+                               """);
         }
     }
 
