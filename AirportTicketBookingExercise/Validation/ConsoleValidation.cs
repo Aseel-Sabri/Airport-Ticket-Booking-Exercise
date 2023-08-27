@@ -5,23 +5,30 @@ namespace AirportTicketBookingExercise.Validation;
 
 public static class ConsoleValidation
 {
-    public static Result ValidateNullablePrice(string? priceString)
+    public static Result ValidateNullableComparablePrice(string? priceString)
     {
         if (string.IsNullOrWhiteSpace(priceString))
             return Result.Ok();
 
+        var isValid = BasicValidation.IsPositiveDouble(priceString) ||
+                      BasicValidation.IsPositiveDouble(priceString.Substring(1)); // in case an operator exists
+
         return Result
-            .OkIf(BasicValidation.IsPositiveDouble(priceString),
+            .OkIf(isValid,
                 "Invalid Double Input");
     }
 
-    public static Result ValidateNullableDate(string? dateString)
+    public static Result ValidateNullableComparableDate(string? dateString)
     {
         if (string.IsNullOrWhiteSpace(dateString))
             return Result.Ok();
 
+        var isValid = DateTime.TryParse(dateString, out _) ||
+                      DateTime.TryParse(dateString.Substring(1), out _); // in case an operator exists
+
+
         return Result
-            .OkIf(DateTime.TryParse(dateString, out _),
+            .OkIf(isValid,
                 "Invalid Date Input: Date Format DD/MM/YYYY");
     }
 

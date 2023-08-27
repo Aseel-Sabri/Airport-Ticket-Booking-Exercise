@@ -3,6 +3,7 @@ using AirportTicketBookingExercise.Models;
 using AirportTicketBookingExercise.Repositories;
 using AirportTicketBookingExercise.Validation;
 using FluentResults;
+using static AirportTicketBookingExercise.DTOs.FlightDto;
 
 namespace AirportTicketBookingExercise.Services;
 
@@ -54,32 +55,91 @@ public class FlightServices : IFlightServices
     {
         return new FlightDto
         {
-            Price = GetPriceOrNull(),
+            Price = GetPriceOrNull(out var priceOperator),
+            PriceOperator = priceOperator,
             DepartureCountry = GetField(_ => Result.Ok(), "Departure Country"),
             DestinationCountry = GetField(_ => Result.Ok(), "Destination Country"),
-            DepartureDate = GetDepartureDateOrNull(),
+            DepartureDate = GetDepartureDateOrNull(out var departureDateOperator),
+            DepartureDateOperator = departureDateOperator,
             DepartureAirport = GetField(_ => Result.Ok(), "Departure Airport"),
             ArrivalAirport = GetField(_ => Result.Ok(), "ArrivalAirport"),
             Class = GetClassOrNull()
         };
     }
 
-    private double? GetPriceOrNull()
+    private double? GetPriceOrNull(out FieldOperator priceOperator)
     {
-        var priceString = GetField(ConsoleValidation.ValidateNullablePrice, "Price");
-        return priceString == null ? null : Double.Parse(priceString);
+        priceOperator = FieldOperator.Equal;
+        var priceString = GetField(ConsoleValidation.ValidateNullableComparablePrice, "Price");
+
+        if (string.IsNullOrWhiteSpace(priceString))
+            return null;
+
+        priceString = priceString.Trim();
+
+        switch (priceString[0])
+        {
+            case '>':
+            {
+                priceOperator = FieldOperator.Greater;
+                priceString = priceString.Substring(1);
+                break;
+            }
+            case '<':
+            {
+                priceOperator = FieldOperator.Less;
+                priceString = priceString.Substring(1);
+                break;
+            }
+            case '=':
+            {
+                priceOperator = FieldOperator.Equal;
+                priceString = priceString.Substring(1);
+                break;
+            }
+        }
+
+        return Double.Parse(priceString);
     }
 
-    private DateTime? GetDepartureDateOrNull()
+    private DateTime? GetDepartureDateOrNull(out FieldOperator departureDateOperator)
     {
-        var dateString = GetField(ConsoleValidation.ValidateNullableDate, "Departure Date");
-        return dateString == null ? null : DateTime.Parse(dateString);
+        departureDateOperator = FieldOperator.Equal;
+        var dateString = GetField(ConsoleValidation.ValidateNullableComparableDate, "Departure Date");
+
+        if (string.IsNullOrWhiteSpace(dateString))
+            return null;
+
+        dateString = dateString.Trim();
+        switch (dateString[0])
+        {
+            case '>':
+            {
+                departureDateOperator = FieldOperator.Greater;
+                dateString = dateString.Substring(1);
+                break;
+            }
+            case '<':
+            {
+                departureDateOperator = FieldOperator.Less;
+                dateString = dateString.Substring(1);
+                break;
+            }
+            case '=':
+            {
+                departureDateOperator = FieldOperator.Equal;
+                dateString = dateString.Substring(1);
+                break;
+            }
+        }
+
+        return DateTime.Parse(dateString);
     }
 
     private FlightClass.ClassType? GetClassOrNull()
     {
         var classString = GetField(ConsoleValidation.ValidateNullableClassType, "Class");
-        return classString == null ? null : Enum.Parse<FlightClass.ClassType>(classString);
+        return string.IsNullOrWhiteSpace(classString) ? null : Enum.Parse<FlightClass.ClassType>(classString);
     }
 
     private FlightClass.ClassType GetClass()

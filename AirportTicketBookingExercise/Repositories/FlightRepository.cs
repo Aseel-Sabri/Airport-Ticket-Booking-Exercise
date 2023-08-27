@@ -30,11 +30,23 @@ public class FlightRepository : IFlightRepository
             .Select(booking => booking.FlightClass.Flight);
 
         var availableFlights = _flightClasses
-            .Where(flightClass => flightClass.GetAvailableNumberOfSeats() > 0)
-            .Where(flightClass => flightsBookedByPassenger.All(flight => flight.Id != flightClass.Flight.Id));
+            .Where(flightClass => flightClass.GetAvailableNumberOfSeats() > 0
+                                  && flightsBookedByPassenger.All(flight => flight.Id != flightClass.Flight.Id)
+                                  && flightClass.Flight.DepartureDate >= DateTime.Now);
 
         if (flightDto.Price != null)
-            availableFlights = availableFlights.Where(flightClass => flightClass.Price == flightDto.Price);
+        {
+            availableFlights = flightDto.PriceOperator switch
+            {
+                FlightDto.FieldOperator.Greater => availableFlights.Where(flightClass =>
+                    flightClass.Price > flightDto.Price),
+                FlightDto.FieldOperator.Less => availableFlights.Where(flightClass =>
+                    flightClass.Price < flightDto.Price),
+                FlightDto.FieldOperator.Equal => availableFlights.Where(flightClass =>
+                    flightClass.Price == flightDto.Price),
+                _ => availableFlights
+            };
+        }
 
         if (flightDto.DepartureCountry != null)
             availableFlights = availableFlights.Where(flightClass =>
@@ -45,8 +57,18 @@ public class FlightRepository : IFlightRepository
                 flightClass.Flight.DestinationCountry.Contains(flightDto.DestinationCountry));
 
         if (flightDto.DepartureDate != null)
-            availableFlights =
-                availableFlights.Where(flightClass => flightClass.Flight.DepartureDate == flightDto.DepartureDate);
+        {
+            availableFlights = flightDto.DepartureDateOperator switch
+            {
+                FlightDto.FieldOperator.Greater => availableFlights.Where(flightClass =>
+                    flightClass.Flight.DepartureDate > flightDto.DepartureDate),
+                FlightDto.FieldOperator.Less => availableFlights.Where(flightClass =>
+                    flightClass.Flight.DepartureDate < flightDto.DepartureDate),
+                FlightDto.FieldOperator.Equal => availableFlights.Where(flightClass =>
+                    flightClass.Flight.DepartureDate == flightDto.DepartureDate),
+                _ => availableFlights
+            };
+        }
 
         if (flightDto.DepartureAirport != null)
             availableFlights = availableFlights.Where(flightClass =>
