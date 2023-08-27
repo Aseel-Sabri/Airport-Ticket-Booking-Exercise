@@ -1,9 +1,9 @@
 ﻿using AirportTicketBookingExercise.Models;
 using FluentResults;
 
-namespace AirportTicketBookingExercise.DataLoader;
+namespace AirportTicketBookingExercise.CsvOperations;
 
-public interface IDataLoader
+public interface IDataManager
 {
     public List<User> Users { get; protected set; }
     public List<Flight> Flights { get; protected set; }
@@ -14,4 +14,6 @@ public interface IDataLoader
 
     Result LoadEntitiesIntoList<TEntity, TMapper>(List<TEntity> entityList, string? filePath = null)
         where TMapper : IEntityMapper<TEntity>, new();
+
+    public Result WriteData();
 }

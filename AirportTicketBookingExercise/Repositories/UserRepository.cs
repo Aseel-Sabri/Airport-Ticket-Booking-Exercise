@@ -1,4 +1,4 @@
-﻿using AirportTicketBookingExercise.DataLoader;
+﻿using AirportTicketBookingExercise.CsvOperations;
 using AirportTicketBookingExercise.Models;
 using FluentResults;
 
@@ -10,8 +10,8 @@ public class UserRepository : IUserRepository
 
     public UserRepository()
     {
-        IDataLoader dataLoader = CsvDataLoader.Instance;
-        _users = dataLoader.Users;
+        IDataManager dataManager = CsvDataManager.Instance;
+        _users = dataManager.Users;
     }
 
     public Result<User> ValidateUserCredentials(string? username, string? password)

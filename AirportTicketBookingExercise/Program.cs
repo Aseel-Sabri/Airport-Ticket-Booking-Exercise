@@ -1,4 +1,4 @@
-﻿using AirportTicketBookingExercise.DataLoader;
+﻿using AirportTicketBookingExercise.CsvOperations;
 using AirportTicketBookingExercise.UserInterface;
 
 namespace AirportTicketBookingExercise
@@ -7,8 +7,8 @@ namespace AirportTicketBookingExercise
     {
         static void Main(string[] args)
         {
-            IDataLoader dataLoader = CsvDataLoader.Instance;
-            var loaderResult = dataLoader.LoadData();
+            IDataManager dataManager = CsvDataManager.Instance;
+            var loaderResult = dataManager.LoadData();
             if (loaderResult.IsFailed)
             {
                 foreach (var error in loaderResult.Errors)
@@ -21,6 +21,15 @@ namespace AirportTicketBookingExercise
 
             IUserInterface userInterface = new ConsoleUserInterface();
             userInterface.Run();
+
+            var savingResult = dataManager.WriteData();
+            if (savingResult.IsFailed)
+            {
+                foreach (var error in savingResult.Errors)
+                {
+                    Console.WriteLine(error.Message);
+                }
+            }
         }
     }
 }

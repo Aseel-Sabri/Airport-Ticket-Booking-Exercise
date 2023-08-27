@@ -1,4 +1,4 @@
-﻿namespace AirportTicketBookingExercise.DataLoader;
+﻿namespace AirportTicketBookingExercise.CsvOperations;
 
 public static class ErrorMessage
 {

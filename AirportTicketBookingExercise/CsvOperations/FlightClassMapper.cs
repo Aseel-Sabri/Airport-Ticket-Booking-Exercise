@@ -1,10 +1,11 @@
 ﻿using AirportTicketBookingExercise.Models;
 using AirportTicketBookingExercise.Validation;
 using CsvHelper;
+using CsvHelper.Configuration;
 using FluentResults;
 using static AirportTicketBookingExercise.Models.FlightClass.ClassType;
 
-namespace AirportTicketBookingExercise.DataLoader;
+namespace AirportTicketBookingExercise.CsvOperations;
 
 public class FlightClassMapper : IEntityMapper<FlightClass>
 {
@@ -117,7 +118,7 @@ public class FlightClassMapper : IEntityMapper<FlightClass>
             return Result.Fail(errorMessage);
 
         var id = int.Parse(fieldValue!);
-        var flights = CsvDataLoader.Instance.Flights;
+        var flights = CsvDataManager.Instance.Flights;
         var flight = flights.FirstOrDefault(flight =>
             flight.Id == id);
 
@@ -125,5 +126,20 @@ public class FlightClassMapper : IEntityMapper<FlightClass>
             return Result.Fail(errorMessage);
 
         return Result.Ok(flight);
+    }
+
+
+    public class FlightClassMap : ClassMap<FlightClass>
+    {
+        public FlightClassMap()
+        {
+            Map(m => m.Id);
+            Map(m => m.Flight)
+                .Convert(convertToStringFunction: args => args.Value.Flight.Id.ToString())
+                .Name("FlightId");
+            Map(m => m.Type);
+            Map(m => m.Price);
+            Map(m => m.Capacity);
+        }
     }
 }

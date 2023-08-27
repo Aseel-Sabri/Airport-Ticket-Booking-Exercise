@@ -1,7 +1,7 @@
 ﻿using CsvHelper;
 using FluentResults;
 
-namespace AirportTicketBookingExercise.DataLoader;
+namespace AirportTicketBookingExercise.CsvOperations;
 
 public interface IEntityMapper<TEntity>
 {

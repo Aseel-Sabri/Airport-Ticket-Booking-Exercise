@@ -3,7 +3,7 @@ using AirportTicketBookingExercise.Validation;
 using CsvHelper;
 using FluentResults;
 
-namespace AirportTicketBookingExercise.DataLoader;
+namespace AirportTicketBookingExercise.CsvOperations;
 
 public class UserMapper : IEntityMapper<User>
 {

@@ -1,25 +1,26 @@
 ﻿using System.Globalization;
 using AirportTicketBookingExercise.Models;
 using CsvHelper;
+using CsvHelper.Configuration;
 using FluentResults;
 
-namespace AirportTicketBookingExercise.DataLoader;
+namespace AirportTicketBookingExercise.CsvOperations;
 
-public class CsvDataLoader : IDataLoader
+public class CsvDataManager : IDataManager
 {
     public List<User> Users { get; set; } = new();
     public List<Flight> Flights { get; set; } = new();
     public List<FlightClass> FlightClasses { get; set; } = new();
     public List<Booking> Bookings { get; set; } = new();
 
-    private static CsvDataLoader? _instance;
+    private static CsvDataManager? _instance;
 
-    public static CsvDataLoader Instance
+    public static CsvDataManager Instance
     {
-        get { return _instance ??= new CsvDataLoader(); }
+        get { return _instance ??= new CsvDataManager(); }
     }
 
-    private CsvDataLoader()
+    private CsvDataManager()
     {
     }
 
@@ -40,6 +41,8 @@ public class CsvDataLoader : IDataLoader
         var bookingResult = LoadEntitiesIntoList<Booking, BookingMapper>(Bookings);
         if (bookingResult.IsFailed)
             return bookingResult;
+
+        UpdateFlightClassPassengerCount();
 
         return Result.Ok();
     }
@@ -107,5 +110,45 @@ public class CsvDataLoader : IDataLoader
         }
 
         #endregion
+    }
+
+
+    public Result SaveEntities<TEntity, TEntityMap>(string filePath, List<TEntity> entityList)
+        where TEntityMap : ClassMap<TEntity>
+    {
+        try
+        {
+            using var writer = new StreamWriter(filePath);
+            using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
+            if (typeof(TEntityMap) != typeof(ClassMap<TEntity>))
+            {
+                csvWriter.Context.RegisterClassMap<TEntityMap>();
+            }
+
+            csvWriter.WriteHeader<TEntity>();
+            csvWriter.NextRecord();
+            csvWriter.WriteRecords(entityList);
+        }
+        catch (Exception e)
+        {
+            return Result.Fail(e.Message);
+        }
+
+        return Result.Ok();
+    }
+
+
+    public Result WriteData()
+    {
+        var userSavingResult = SaveEntities<User, ClassMap<User>>(GetDefaultFilePath<User>(), Users);
+        var flightSavingResult =
+            SaveEntities<Flight, ClassMap<Flight>>(GetDefaultFilePath<Flight>(), Flights);
+        var flightClassSavingResult =
+            SaveEntities<FlightClass, FlightClassMapper.FlightClassMap>(GetDefaultFilePath<FlightClass>(),
+                FlightClasses);
+        var bookingSavingResult =
+            SaveEntities<Booking, BookingMapper.BookingMap>(GetDefaultFilePath<Booking>(), Bookings);
+
+        return Result.Merge(userSavingResult, flightSavingResult, flightClassSavingResult, bookingSavingResult);
     }
 }

@@ -1,4 +1,4 @@
-﻿using AirportTicketBookingExercise.DataLoader;
+﻿using AirportTicketBookingExercise.CsvOperations;
 using AirportTicketBookingExercise.DTOs;
 using AirportTicketBookingExercise.Models;
 using FluentResults;
@@ -8,7 +8,7 @@ namespace AirportTicketBookingExercise.Repositories;
 public class FlightRepository : IFlightRepository
 {
     private readonly IUserRepository _userRepository = new UserRepository();
-    private readonly IDataLoader _dataLoader = CsvDataLoader.Instance;
+    private readonly IDataManager _dataManager = CsvDataManager.Instance;
 
 
     private readonly List<Flight> _flights;
@@ -17,9 +17,9 @@ public class FlightRepository : IFlightRepository
 
     public FlightRepository()
     {
-        _flights = _dataLoader.Flights;
-        _flightClasses = _dataLoader.FlightClasses;
-        _bookings = _dataLoader.Bookings;
+        _flights = _dataManager.Flights;
+        _flightClasses = _dataManager.FlightClasses;
+        _bookings = _dataManager.Bookings;
     }
 
     public IEnumerable<FlightClass> GetAvailableFilteredFlights(FlightDto flightDto, int passengerId)
@@ -190,11 +190,11 @@ public class FlightRepository : IFlightRepository
 
     public Result LoadFlights(string filePath)
     {
-        return _dataLoader.LoadEntitiesIntoList<Flight, FlightMapper>(_flights, filePath);
+        return _dataManager.LoadEntitiesIntoList<Flight, FlightMapper>(_flights, filePath);
     }
 
     public Result LoadFlightsClasses(string filePath)
     {
-        return _dataLoader.LoadEntitiesIntoList<FlightClass, FlightClassMapper>(_flightClasses, filePath);
+        return _dataManager.LoadEntitiesIntoList<FlightClass, FlightClassMapper>(_flightClasses, filePath);
     }
 }

@@ -1,9 +1,10 @@
 ﻿using AirportTicketBookingExercise.Models;
 using AirportTicketBookingExercise.Validation;
 using CsvHelper;
+using CsvHelper.Configuration;
 using FluentResults;
 
-namespace AirportTicketBookingExercise.DataLoader;
+namespace AirportTicketBookingExercise.CsvOperations;
 
 public class BookingMapper : IEntityMapper<Booking>
 {
@@ -47,7 +48,7 @@ public class BookingMapper : IEntityMapper<Booking>
 
         var passengerId = int.Parse(fieldValue!);
 
-        var users = CsvDataLoader.Instance.Users;
+        var users = CsvDataManager.Instance.Users;
         var passenger = users.FirstOrDefault(user =>
             user.Id == passengerId);
 
@@ -72,7 +73,7 @@ public class BookingMapper : IEntityMapper<Booking>
 
         #endregion
 
-        var flightClasses = CsvDataLoader.Instance.FlightClasses;
+        var flightClasses = CsvDataManager.Instance.FlightClasses;
         var fieldValue = csvReader.GetField("FlightClassId");
         if (!BasicValidation.IsPositiveInteger(fieldValue))
         {
@@ -87,5 +88,19 @@ public class BookingMapper : IEntityMapper<Booking>
         }
 
         return Result.Ok(flightClass);
+    }
+
+    public class BookingMap : ClassMap<Booking>
+    {
+        public BookingMap()
+        {
+            Map(m => m.FlightClass)
+                .Convert(convertToStringFunction: args => args.Value.FlightClass.Id.ToString())
+                .Name("FlightClassId");
+
+            Map(m => m.Passenger)
+                .Convert(convertToStringFunction: args => args.Value.Passenger.Id.ToString())
+                .Name("PassengerId");
+        }
     }
 }
